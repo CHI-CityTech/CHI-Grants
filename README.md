@@ -36,6 +36,8 @@ CHI-Grants/
 
 ## 🚀 Getting Started
 
+**New here?** Check out the [Getting Started Guide](docs/GETTING_STARTED.md) for a step-by-step walkthrough!
+
 ### Submitting a Grant Proposal
 
 1. **Prepare Your Proposal**
@@ -140,7 +142,9 @@ Total timeline: ~2-3 weeks
 
 ### Documentation
 - [Submission Guidelines](docs/SUBMISSION_GUIDELINES.md)
+- [Getting Started Guide](docs/GETTING_STARTED.md)
 - [Project Board Setup](docs/PROJECT_BOARDS.md)
+- [Quick Reference](docs/QUICK_REFERENCE.md)
 
 ### Examples
 - [Example Grant Proposal](proposals/examples/EXAMPLE_PROPOSAL.md)

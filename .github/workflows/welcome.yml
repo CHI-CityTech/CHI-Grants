@@ -1,0 +1,92 @@
+name: Welcome New Contributors
+on:
+  pull_request_target:
+    types: [opened]
+  issues:
+    types: [opened]
+
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Welcome new contributors
+        uses: actions/github-script@v6
+        with:
+          script: |
+            // Check if this is the user's first contribution
+            const creator = context.payload.sender.login;
+            const repo = context.repo;
+            
+            // Check for previous issues and PRs
+            const issues = await github.rest.issues.listForRepo({
+              owner: repo.owner,
+              repo: repo.repo,
+              creator: creator,
+              state: 'all',
+              per_page: 2
+            });
+            
+            const isFirstContribution = issues.data.length <= 1;
+            
+            if (isFirstContribution) {
+              let message = '';
+              
+              if (context.eventName === 'issues') {
+                message = `## 👋 Welcome to CHI-Grants!
+
+Thank you for opening your first issue, @${creator}! 
+
+We're excited to have you as part of the CHI ecosystem community.
+
+**What happens next?**
+- Our team will review your issue soon
+- You may be asked for additional information
+- Updates will be posted here as comments
+
+**Resources that might help:**
+- 📚 [Submission Guidelines](docs/SUBMISSION_GUIDELINES.md)
+- 🚀 [Quick Reference](docs/QUICK_REFERENCE.md)
+- 🤝 [Contributing Guide](CONTRIBUTING.md)
+
+If you have questions, feel free to ask here or start a [Discussion](../../discussions).
+
+Happy collaborating! 🎉`;
+              } else {
+                message = `## 👋 Welcome to CHI-Grants!
+
+Thank you for your first pull request, @${creator}! 
+
+We appreciate your contribution to the CHI ecosystem.
+
+**What happens next?**
+- A maintainer will review your PR
+- You may be asked to make changes
+- Once approved, your PR will be merged
+
+**Tips for success:**
+- Keep your changes focused and minimal
+- Update documentation if needed
+- Respond to review feedback promptly
+- Check that CI checks pass
+
+Thank you for helping improve CHI-Grants! 🚀`;
+              }
+              
+              if (context.eventName === 'issues') {
+                await github.rest.issues.createComment({
+                  issue_number: context.issue.number,
+                  owner: repo.owner,
+                  repo: repo.repo,
+                  body: message
+                });
+              } else {
+                await github.rest.pulls.createReview({
+                  pull_number: context.issue.number,
+                  owner: repo.owner,
+                  repo: repo.repo,
+                  body: message,
+                  event: 'COMMENT'
+                });
+              }
+            }
