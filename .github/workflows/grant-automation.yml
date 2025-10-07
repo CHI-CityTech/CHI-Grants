@@ -1,0 +1,81 @@
+name: Grant Proposal Automation
+on:
+  issues:
+    types: [opened, labeled]
+  
+jobs:
+  process-grant-proposal:
+    if: contains(github.event.issue.labels.*.name, 'grant-proposal')
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Add to Grant Tracking Project
+        uses: actions/add-to-project@v0.5.0
+        with:
+          project-url: https://github.com/orgs/CHI-CityTech/projects/1
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Comment on new grant proposal
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🎯 Thank you for submitting a grant proposal!
+              
+              **Next Steps:**
+              1. Our team will review your proposal within 5 business days
+              2. You may be asked to provide additional information
+              3. Once approved, a dedicated project repository will be created
+              
+              **Resources:**
+              - [Grant Template](../proposals/templates/GRANT_TEMPLATE.md)
+              - [Submission Guidelines](../docs/SUBMISSION_GUIDELINES.md)
+              
+              Please ensure all checklist items are completed for faster processing.`
+            })
+  
+  create-repository-on-approval:
+    if: contains(github.event.issue.labels.*.name, 'approved')
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Extract project info
+        id: extract
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const title = issue.title.replace('[GRANT] ', '');
+            const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+            core.setOutput('project_name', title);
+            core.setOutput('project_slug', slug);
+      
+      - name: Comment about repository creation
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `✅ **Grant Approved!**
+              
+              A dedicated project repository will be created: \`CHI-${{ steps.extract.outputs.project_slug }}\`
+              
+              The repository will include:
+              - Project documentation structure
+              - Issue tracking templates
+              - CI/CD workflows
+              - Grant deliverables tracking
+              
+              Please contact the repository administrator to finalize the setup.`
+            })

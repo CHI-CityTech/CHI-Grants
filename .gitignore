@@ -1,0 +1,77 @@
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+.tmp/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Dependencies (if any Node.js tools are added)
+node_modules/
+package-lock.json
+
+# Python virtual environments (if any Python tools are added)
+venv/
+env/
+.venv/
+__pycache__/
+*.pyc
+
+# Secrets and credentials
+.env
+*.key
+*.pem
+secrets/
+credentials/
+
+# Grant proposal working files (keep private during development)
+# Uncomment if you want to keep drafts private:
+# proposals/active/*/draft-*.md
+# proposals/active/*/private/
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
+# Large binary files (if any)
+*.pdf
+*.docx
+*.xlsx
+# Note: You may want to track some PDFs/docs for proposals
+# Remove these lines if you need to commit such files
+
+# Test output
+coverage/
+.coverage
+*.cover
+htmlcov/
+
+# Compiled source
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
