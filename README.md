@@ -85,3 +85,9 @@ When adding new grants:
 ## Support
 
 For questions or issues with the grant management system, please open an issue in this repository.
+
+## Additional Documentation
+
+- **[Usage Guide](USAGE_GUIDE.md)**: Comprehensive step-by-step instructions
+- **[Quick Reference](QUICK_REFERENCE.md)**: Quick command reference card
+- **[Scripts README](scripts/README.md)**: Script documentation
