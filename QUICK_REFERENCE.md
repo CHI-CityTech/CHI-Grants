@@ -2,6 +2,12 @@
 
 ## Common Commands
 
+### Upload Documents (Interactive)
+```bash
+# Launch interactive file browser - EASIEST METHOD
+python3 scripts/interactive_uploader.py
+```
+
 ### Add a Grant (Interactive)
 ```bash
 python3 scripts/add_grant.py

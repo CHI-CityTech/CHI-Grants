@@ -56,7 +56,19 @@ export OPENAI_API_KEY="your-api-key-here"
 ### Option 1: AI-Powered Workflow (Recommended)
 
 #### Step 1: Upload Grant Documents
-Upload your grant documents (PDFs, Word docs, etc.) for AI processing:
+
+**Interactive File Browser (Easiest):**
+```bash
+# Launch interactive uploader with file browser
+python3 scripts/interactive_uploader.py
+```
+This provides a user-friendly interface to:
+- Browse and select files visually
+- Add metadata interactively  
+- Preview files before upload
+- Trigger AI processing automatically
+
+**Command Line Upload:**
 ```bash
 # Upload a single document
 python3 scripts/upload_grant_documents.py --file grant_proposal.pdf
