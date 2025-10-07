@@ -71,6 +71,7 @@ Once your grant is approved:
 
 ### Automated Workflows
 - **Grant Proposal Processing** - Auto-tags and assigns proposals to project boards
+- **Proposal Validation** - Automatically checks proposal completeness
 - **Repository Creation** - Generates project repositories for approved grants
 - **Status Tracking** - Updates grant status based on labels
 - **Notifications** - Sends updates to stakeholders
@@ -87,6 +88,20 @@ This creates a complete repository structure with:
 - Issue templates for deliverables
 - GitHub Actions workflows
 - Project tracking setup
+
+### Proposal Validation Script
+Validate your proposal locally before submission:
+
+```bash
+./scripts/validate-proposal.sh my-proposal.md
+```
+
+This checks for:
+- Required sections
+- Key information fields
+- CHI integration
+- Budget details
+- Timeline and deliverables
 
 ## 📊 Project Boards
 
@@ -131,8 +146,11 @@ Total timeline: ~2-3 weeks
 - [Example Grant Proposal](proposals/examples/EXAMPLE_PROPOSAL.md)
 
 ### Automation
-- [GitHub Actions Workflow](.github/workflows/grant-automation.yml)
+- [Grant Automation Workflow](.github/workflows/grant-automation.yml)
+- [Proposal Validation Workflow](.github/workflows/validate-proposal.yml)
 - [Repository Creation Script](scripts/create-grant-repo.sh)
+- [Proposal Validation Script](scripts/validate-proposal.sh)
+- [Label Setup Script](scripts/setup-labels.sh)
 
 ## 🤝 CHI Ecosystem Integration
 

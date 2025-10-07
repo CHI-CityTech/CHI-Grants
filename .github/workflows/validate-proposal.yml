@@ -1,0 +1,117 @@
+name: Validate Grant Proposal
+on:
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created]
+
+jobs:
+  validate-proposal:
+    if: contains(github.event.issue.labels.*.name, 'grant-proposal')
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check proposal completeness
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const body = issue.body || '';
+            
+            // Check for required fields
+            const requiredFields = [
+              'Project Title:',
+              'Principal Investigator:',
+              'Funding Agency:',
+              'Requested Amount:',
+              'Project Duration:'
+            ];
+            
+            const missingFields = requiredFields.filter(field => !body.includes(field));
+            
+            // Check for checklist items
+            const hasChecklist = body.includes('- [ ]') || body.includes('- [x]');
+            
+            let validationMessage = '## 🤖 Automated Validation\n\n';
+            
+            if (missingFields.length === 0) {
+              validationMessage += '✅ All required fields are present.\n\n';
+            } else {
+              validationMessage += '⚠️ Missing or incomplete fields:\n';
+              missingFields.forEach(field => {
+                validationMessage += `- ${field}\n`;
+              });
+              validationMessage += '\n';
+            }
+            
+            if (hasChecklist) {
+              validationMessage += '✅ Checklist is present.\n\n';
+            } else {
+              validationMessage += '⚠️ Please complete the proposal checklist.\n\n';
+            }
+            
+            // Check for attachments or links
+            const hasLinks = body.includes('http') || body.includes('[') || body.includes('attachment');
+            if (hasLinks) {
+              validationMessage += '✅ Proposal documents appear to be linked or attached.\n\n';
+            } else {
+              validationMessage += '⚠️ Please attach or link your proposal document.\n\n';
+            }
+            
+            // Overall status
+            if (missingFields.length === 0 && hasChecklist && hasLinks) {
+              validationMessage += '### Status: ✅ Ready for Review\n';
+              validationMessage += 'Your proposal appears complete. Our team will review it soon.\n';
+            } else {
+              validationMessage += '### Status: ⏳ Needs Attention\n';
+              validationMessage += 'Please address the items above to complete your submission.\n';
+            }
+            
+            validationMessage += '\n---\n*This is an automated validation. For questions, review the [Submission Guidelines](../docs/SUBMISSION_GUIDELINES.md).*';
+            
+            // Post comment
+            github.rest.issues.createComment({
+              issue_number: issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: validationMessage
+            });
+
+  check-template-usage:
+    if: contains(github.event.issue.labels.*.name, 'grant-proposal')
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Verify template usage
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const body = issue.body || '';
+            
+            // Check if the issue uses the template format
+            const isUsingTemplate = body.includes('## Grant Information') || 
+                                   body.includes('## Quick Links') ||
+                                   body.includes('## Proposal Checklist');
+            
+            if (!isUsingTemplate) {
+              const message = `## ℹ️ Template Recommendation
+              
+It looks like you might not be using the grant proposal template. 
+
+Using the template ensures all required information is captured and speeds up the review process.
+
+**To use the template:**
+1. Close this issue
+2. Create a new issue using the [Grant Proposal Submission template](../../issues/new?template=grant-proposal.md)
+3. Fill in all sections
+
+Alternatively, you can manually add the required sections to this issue. See the [template here](../.github/ISSUE_TEMPLATE/grant-proposal.md).`;
+
+              github.rest.issues.createComment({
+                issue_number: issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: message
+              });
+            }

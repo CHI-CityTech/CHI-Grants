@@ -5,10 +5,11 @@
 ### 📝 Submitting a New Grant Proposal
 
 1. **Prepare your proposal** using the [template](proposals/templates/GRANT_TEMPLATE.md)
-2. **Create an issue** using the [Grant Proposal template](../../issues/new?template=grant-proposal.md)
-3. **Track progress** through the issue comments
-4. **Respond to feedback** from reviewers
-5. **Wait for approval** (typically 2-3 weeks)
+2. **Validate locally** (optional): `./scripts/validate-proposal.sh my-proposal.md`
+3. **Create an issue** using the [Grant Proposal template](../../issues/new?template=grant-proposal.md)
+4. **Track progress** through the issue comments
+5. **Respond to feedback** from reviewers
+6. **Wait for approval** (typically 2-3 weeks)
 
 ### 📚 Key Documents
 - [Grant Template](proposals/templates/GRANT_TEMPLATE.md) - Fill this out
@@ -58,6 +59,11 @@
 See [Project Boards Documentation](docs/PROJECT_BOARDS.md)
 
 ## Common Tasks
+
+### Validate a Proposal Locally
+```bash
+./scripts/validate-proposal.sh my-proposal.md
+```
 
 ### Adding a Label to an Issue
 ```bash
