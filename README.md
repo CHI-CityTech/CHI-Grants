@@ -5,11 +5,30 @@ Location for materials related to research, acquisition, and management of CHI g
 This repository provides an AI-powered automated system for managing and tracking grant information. It features a multi-state workflow that processes grant documents through AI extraction, validation, and human review before generating standardized grant files.
 
 ## Repository Structure
+
+### Human-Authored Grant Lifecycle
+
 ```
 CHI-Grants/
-├── grants/          # Final grant information files
-├── scripts/         # Automation and workflow scripts
-├── templates/       # Grant templates
+├── solicitations/   # External funding calls CHI is tracking or evaluating
+├── proposals/       # CHI's authored proposal packages (one folder per submission)
+├── awards/          # Post-award administrative records for funded grants
+├── shared/          # Reusable boilerplate, biosketches, budget templates
+```
+
+Each folder follows the naming convention `YYYY-sponsor-short-title/` (e.g., `2026-nsf-bbs-collaborative-ai/`). See the README inside each folder for required contents and status values.
+
+**Lifecycle flow:** solicitations → proposals → awards
+
+**Canonical metadata and project linkage** for each proposal is maintained in [META-CHIIDS](https://github.com/CHI-CityTech/META-CHIIDS) and linked from each proposal README.
+
+---
+
+### AI-Assisted Ingestion Pipeline
+
+```
+CHI-Grants/
+├── grants/          # Final grant information files (AI pipeline output)
 ├── intake/          # Document upload and processing
 │   ├── pending/     # Documents awaiting processing
 │   ├── processing/  # Documents being processed by AI
@@ -19,7 +38,8 @@ CHI-Grants/
 │   ├── validated/   # AI-validated data
 │   └── approved/    # Human-approved data
 ├── ai_agents/       # AI processing modules
-└── README.md        # This file
+├── scripts/         # Automation and workflow scripts
+└── templates/       # Grant templates
 ```
 
 ## Workflow Overview
